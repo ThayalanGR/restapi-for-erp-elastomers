@@ -29,7 +29,7 @@ order by defrecdate desc,issref ";
         }
     }
     //constructing data
-    if (sizeof($data) > 0) {
+    if ($data != null) {
         //obataing user list
         $userList = array();
         $sql1 = "select fullName from tbl_users where status>0 and userDesignation = 'Inspector'";
