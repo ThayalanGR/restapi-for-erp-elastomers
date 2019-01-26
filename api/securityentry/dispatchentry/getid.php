@@ -12,6 +12,6 @@ if (isset($_GET['invid'])) {
     $assoc = mysqli_fetch_assoc($data);
     $docId = $assoc["docId"];
 
-    $array = array("response" => "mmrp restful api service");
+    // $array = array("response" => "mmrp restful api service");
     echo json_encode($assoc);
 }

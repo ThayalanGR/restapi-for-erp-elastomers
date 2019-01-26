@@ -2,7 +2,7 @@
 
 ## inspectionentry
 
-#### initial fetch
+#### initial fetch (GET)
 
 http://thayalangr-pc:50/api/inspectionentry/fetch.php?id=E2923_18-x
 
@@ -10,6 +10,6 @@ http://thayalangr-pc:50/api/inspectionentry/fetch.php?id=E2923_18-x
 
 ### dispatch entry
 
-#### initial fetch
+#### initial fetch (GET)
 
 http://thayalangr-pc:50/api/securityentry/dispatchentry/getid.php?invid=inv~17-10419
