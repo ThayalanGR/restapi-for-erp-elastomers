@@ -28,16 +28,25 @@ if (isset($_GET['id'])) {
     }
     //constructing data
     if ($data != null) {
+        //obtaining rejection list
+        $rejectionList = array();
+        $sql2	=	"select distinct t1.sno, t1.rej_type, t1.rej_short_name
+        from tbl_rejection t1, tbl_component_rejection t2
+        where t1.sno=t2.cmpdRejNo and t2.cmpdId='".$data['cmpdid']."'";
+        $row = mysqli_query($DB, $sql2);
+        while ($result = mysqli_fetch_assoc($row)) {
+            array_push($rejectionList, $result);
+        }
+
         //obataing user list
-        header("HTTP/1.0 200");
-        http_response_code(200);
         $userList = array();
         $sql1 = "select fullName from tbl_users where status>0 and userDesignation = 'Inspector'";
         $row = mysqli_query($DB, $sql1);
         while ($result = mysqli_fetch_assoc($row)) {
             array_push($userList, $result['fullName']);
         }
-        $array = array("response" => $data, "userList" =>  $userList);
+        $array = array("response" => $data, "rejectionList" => sizeof($rejectionList)>0? $rejectionList : null , "userList" =>  $userList);
+        http_response_code(200);
         echo json_encode($array);
     } else {
         http_response_code(204);
@@ -47,7 +56,7 @@ if (isset($_GET['id'])) {
 
 //handling post request
 if (isset($_POST['status'])) {
-    header("HTTP/1.0 200");
+    http_response_code(200);
     $array = array("response" => true);
     echo json_encode($array);
 }
