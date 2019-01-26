@@ -2,7 +2,7 @@
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
 include("../../../config/dbconnection.php");
-
+//handling get request
 if (isset($_GET['invid'])) {
     $doc = explode('~', $_GET['invid']);
     $type = $doc[0];
@@ -12,8 +12,8 @@ if (isset($_GET['invid'])) {
     while ($result = mysqli_fetch_assoc($row)) {
         $data = $result['docId'];
     }
-    $list = array();
-    if ($data = $doc[1]) {
+    $list = null;
+    if ($data != $doc[1]) {
         switch ($doc[0]) {
             case 'inv':
                 $sql	=	"select '".$doc[0]."' as doctype, tis.invId, invConsignee, sum(invqty) as invqty, concat(invName,' - ', invDesc) as partNumber, DATE_FORMAT(invDate, '%d-%b-%Y') as invDate, invGrandTotal, if(invtype = 'cmpd' and cmpdstdpckqty > 0,ceil(sum(invqty)/cmpdstdpckqty),count(*)) as numPacks
@@ -23,7 +23,7 @@ if (isset($_GET['invid'])) {
                                     where tis.invId = '".$doc[1]."' and tis.status > 0  group by tis.invId";
                 $row = mysqli_query($DB, $sql);
                 while ($result = mysqli_fetch_assoc($row)) {
-                    array_push($list, $result);
+                    $list = $result;
                 }
             break;
             case 'dc':
@@ -33,7 +33,7 @@ if (isset($_GET['invid'])) {
                                     where tdc.dcId = '".$doc[1]."' and tdc.status > 0 group by tdc.dcId";
                 $row = mysqli_query($DB, $sql);
                 while ($result = mysqli_fetch_assoc($row)) {
-                    array_push($list, $result);
+                    $list = $result;
                 }
             break;
             case 'mold':
@@ -42,7 +42,7 @@ if (isset($_GET['invid'])) {
                                     where mdIssRef = '".$doc[1]."' and status > 0 group by mdIssRef";
                 $row = mysqli_query($DB, $sql);
                 while ($result = mysqli_fetch_assoc($row)) {
-                    array_push($list, $result);
+                    $list = $result;
                 }
             break;
             case 'trim':
@@ -52,7 +52,7 @@ if (isset($_GET['invid'])) {
                                     where defissref = '".$doc[1]."' and tdi.status > 0 group by defissref";
                 $row = mysqli_query($DB, $sql);
                 while ($result = mysqli_fetch_assoc($row)) {
-                    array_push($list, $result);
+                    $list = $result;
                 }
             break;
             case 'tool':
@@ -61,18 +61,26 @@ if (isset($_GET['invid'])) {
                                     where ttn_ref = '".$doc[1]."' and status > 0 ";
                 $row = mysqli_query($DB, $sql);
                 while ($result = mysqli_fetch_assoc($row)) {
-                    array_push($list, $result);
+                    $list = $result;
                 }
             break;
         }//switch end
     }
 
     //constructing data
-    if ($data != null) {
+    if ($data != $doc[1] && sizeof($doc) == 2) {
+        http_response_code(200);
         $array = array("response" => $list);
         echo json_encode($array);
     } else {
-        $array = array("response" => false);
-        echo json_encode($array);
+        http_response_code(204);
+        echo null;
     }
+}
+
+//handling post request
+if (isset($_POST['status'])) {
+    http_response_code(200);
+    $array = array("response" => true);
+    echo json_encode($array);
 }
