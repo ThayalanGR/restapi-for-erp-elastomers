@@ -19,7 +19,7 @@ post request json body structure:-
     "recqty": 700,
     "appqty": 649,
     "inspector": "A. Julie",
-    "planid": E2923_18-x,
+    "planid": "E2923_18-x",
     "rejection": [
         {
             "rej_short_name":  "FL",
