@@ -6,7 +6,7 @@
 
 http://thayalangr-pc:50/api/inspectionentry/fetch.php?id=E2923_18-x
 
-#### initial fetch (GET)
+#### initial fetch (POST)
 
 http://thayalangr-pc:50/api/inspectionentry/fetch.php
 
