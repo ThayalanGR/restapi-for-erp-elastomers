@@ -4,7 +4,7 @@ header("Content-Type: application/json; charset=UTF-8");
 include("../../config/dbconnection.php");
 
 //handling get request
-if (isset($_GET['id'])) {
+if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $id = $_GET['id'];
     $sql = "select issref,cmpdname,cmpdrefno,'0' as isexternal,(dr.currrec - ifnull(mq.receiptqty,0)) as currrec,          di.cmpdid,dr.sno, dr.defrecdate, DATE_FORMAT(dr.defrecdate,'%d-%b-%Y') as defrecdatef
         from tbl_deflash_reciept dr
@@ -55,8 +55,41 @@ if (isset($_GET['id'])) {
 }
 
 //handling post request
-if (isset($_POST['status'])) {
-    http_response_code(200);
-    $array = array("response" => true);
-    echo json_encode($array);
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $data = json_decode(file_get_contents('php://input'), true);
+    if (sizeof($data) == 2) {
+        $totalPlans = sizeof($data['planList']);
+        $pickUpBy = $data['pickUp']['by'];
+        $pickUpVehicle = $data['pickUp']['vehicle'];
+        $docId = array();
+        $docType = array();
+        $totalQty = array();
+        $numPacks = array();
+        foreach ($data['planList'] as $key => $value) {
+            array_push($docId, $value["docId"]);
+            array_push($docType, $value["docType"]);
+            array_push($totalQty, $value["totalQty"]);
+            array_push($numPacks, $value["numPacks"]);
+        }
+        //pushing into db
+        $sql_ins_items	=	"insert into tbl_despatch (docId, docType, totalQty, packQty, vehNum, despPerson, despOn) values";
+        for ($lp=0;$lp<count($docId);$lp++) {
+            $sql_ins_items	.=	"('".$docId[$lp]."', '".$docType[$lp]."', '".$totalQty[$lp]."', '".$numPacks[$lp]."','$pickUpVehicle','$pickUpBy',now())";
+            if ($lp < count($docId)-1) {
+                $sql_ins_items .= ",";
+            }
+        }
+    
+        $row = mysqli_query($DB, $sql_ins_items);
+        if ($row) {
+            http_response_code(202);
+            echo json_encode(array("response" => true));
+        } else {
+            http_response_code(400);
+            echo false;
+        }
+    } else {
+        http_response_code(400);
+        echo json_encode(array("response" => false));
+    }
 }

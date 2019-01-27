@@ -6,6 +6,33 @@
 
 http://thayalangr-pc:50/api/inspectionentry/fetch.php?id=E2923_18-x
 
+#### initial fetch (GET)
+
+post request json body structure:-
+
+```
+{
+    "cmpdid": "CNT0305",
+    "mdlrref": "61337",
+    "isexternal": "0",
+    "inspdate": "2018-09-06",
+    "recqty": 700,
+    "appqty": 649,
+    "inspector": "A. Julie",
+    "planid": E2923_18-x,
+    "rejection": [
+        {
+            "rej_short_name":  "FL",
+            "value": 23
+        },{
+            "rej_short_name":  "TR",
+            "value": 12
+        }
+    ]
+}
+
+```
+
 ## securityentry
 
 ### dispatch entry
