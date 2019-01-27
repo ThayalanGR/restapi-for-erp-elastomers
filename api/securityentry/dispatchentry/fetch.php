@@ -2,7 +2,6 @@
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
 include("../../../config/dbconnection.php");
-
 //handling get request
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $doc = explode('~', $_GET['invid']);
@@ -69,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     }
 
     //constructing data
-    if ($data != $doc[1] && sizeof($doc) == 2) {
+    if ($data != $doc[1] && sizeof($doc) == 2 && $list !=null) {
         http_response_code(200);
         $array = array("response" => $list);
         echo json_encode($array);
