@@ -4,11 +4,11 @@
 
 #### initial fetch (GET)
 
-http://thayalangr-pc:50/api/inspectionentry/fetch.php?id=E2923_18-x
+http://13.127.28.250/api/inspectionentry/fetch.php?id=E2923_18-x
 
 #### initial fetch (POST)
 
-http://thayalangr-pc:50/api/inspectionentry/fetch.php
+http://13.127.28.250/api/inspectionentry/fetch.php
 
 post request json body structure:-
 
@@ -41,11 +41,13 @@ post request json body structure:-
 
 #### initial fetch (GET)
 
-http://thayalangr-pc:50/api/securityentry/dispatchentry/fetch.php?invid=inv~18-6269
+http://13.127.28.250/api/securityentry/dispatchentry/fetch.php?invid=inv~18-6268
+http://13.127.28.250/api/securityentry/dispatchentry/fetch.php?invid=inv~18-6269
+http://13.127.28.250/api/securityentry/dispatchentry/fetch.php?invid=inv~18-6270
 
 #### initial fetch (POST)
 
-http://thayalangr-pc:50/api/securityentry/dispatchentry/fetch.php
+http://13.127.28.250/api/securityentry/dispatchentry/fetch.php
 
 post request json body structure:-
 
