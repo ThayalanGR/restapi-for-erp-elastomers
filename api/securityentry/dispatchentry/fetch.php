@@ -104,8 +104,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
         }
     
-        // $row = mysqli_query($DB, $sql_ins_items);
-        if (true) {
+        $row = mysqli_query($DB, $sql_ins_items);
+        if ($row) {
             http_response_code(202);
             echo json_encode(array("response" => true));
         } else {
